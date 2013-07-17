@@ -1,4 +1,4 @@
-jqmModule.directive('jqmViewport', ['jqmCachingViewDirective', '$animator', '$history', function (ngViewDirectives, $animator, $history) {
+jqmModule.directive('jqmViewport', ['jqmCachingViewDirective', '$animator', '$history', 'jqmPanelContentWrapDirective', function (ngViewDirectives, $animator, $history, jqmPanelContentWrapDirectives) {
     // Note: Can't use template + replace here,
     // as this might be used on the <body>, which is not supported by angular.
     // So we are calling the ngViewDirective#link functions directly...
@@ -46,6 +46,10 @@ jqmModule.directive('jqmViewport', ['jqmCachingViewDirective', '$animator', '$hi
             }
             transition = transition || 'none';
             iAttrs.$set('ngAnimate', "'jqmPage-" + transition + (reverse?"-reverse":"")+"'");
+        });
+
+        angular.forEach(jqmPanelContentWrapDirectives, function(delegate) {
+            delegate.link(scope, iElement, iAttrs);
         });
     }
 }]);

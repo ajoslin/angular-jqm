@@ -1,0 +1,15 @@
+.ui-panel {
+  position: absolute;
+}
+
+.ui-panel-closed {
+  display: none;
+}
+
+.ui-panel.ui-panel-opened {
+  z-index: 1001;
+}
+.ui-panel-dismiss {
+  z-index: 1000; /* lower than ui-panel */
+}
+

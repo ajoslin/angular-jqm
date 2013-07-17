@@ -17,6 +17,8 @@
 "src/directives/jqmListview.js",
 "src/directives/jqmOnceClass.js",
 "src/directives/jqmPage.js",
+"src/directives/jqmPanel.js",
+"src/directives/jqmPanelContentWrap.js",
 "src/directives/jqmPositionAnchor.js",
 "src/directives/jqmScopeAs.js",
 "src/directives/jqmScrollable.js",
@@ -34,5 +36,6 @@
 "src/services/parseDecorator.js",
 "src/services/scopeDecorator.js",
 "src/services/snifferDecorator.js",
-"src/services/templateCacheDecorator.js"
+"src/services/templateCacheDecorator.js",
+"src/services/transitionComplete.js"
 ]
