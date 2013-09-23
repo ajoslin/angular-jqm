@@ -15,10 +15,7 @@ before_script:
 # Saucelabs only allows two concurrent browsers, so we do two seperate grunt
 # tasks, each with two of the browsers running
 script:
-- grunt install
 - grunt
-- grunt karma:sauce1
-- grunt karma:sauce2
 
 after_success: ./build/update-gh-pages.sh
 
