@@ -81,7 +81,7 @@
  </file>
  </example>
  */
-jqmModule.directive('jqmView', ['$templateCache', '$route', '$anchorScroll', '$compile',
+false && jqmModule.directive('jqmView', ['$templateCache', '$route', '$anchorScroll', '$compile',
   '$controller', '$animator', '$http', '$q', '$injector',
   function ($templateCache, $route, $anchorScroll, $compile, $controller, $animator, $http, $q, $injector) {
     return {

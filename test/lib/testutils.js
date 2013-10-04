@@ -279,7 +279,7 @@ jasmine.getEnv().defaultTimeoutInterval = 25000;
         if (typeof pages === 'string') {
             pages = generatePages(pages);
         }
-        inject(function ($rootElement, $compile, $rootScope, $location, $templateCache, $animator) {
+        inject(function ($rootElement, $compile, $rootScope, $location, $templateCache, $animate) {
             addPages(pages);
             self.viewPort = $("<div jqm-caching-view></div>");
             $($rootElement).append(self.viewPort);
@@ -290,7 +290,7 @@ jasmine.getEnv().defaultTimeoutInterval = 25000;
             $rootScope.$apply();
             // Note: angular does not start animations until the first $apply is finished.
             // We have to simulate this here also!
-            $animator.enabled(true);
+            $animate.enabled(true);
 
             function addPages() {
                 var pageUrl, firstPage, page;
@@ -336,22 +336,24 @@ jasmine.getEnv().defaultTimeoutInterval = 25000;
     };
 
     NgUtils.prototype.beginTransitionTo = function (url) {
-        inject(function ($location, $rootScope) {
+        inject(function ($location, $rootScope, $timeout) {
             $location.url(url);
             $rootScope.$apply();
         });
         this.tick(1);
+        inject(function($timeout) {
+          $timeout.flush();
+        });
     };
 
     NgUtils.prototype.historyGo = function (relativeIndex) {
-        inject(function ($history, $browser) {
+        inject(function ($history, $location, $rootScope) {
             var newIndex = $history.activeIndex + relativeIndex;
             if (newIndex < 0 || newIndex >= $history.urlStack.length) {
                 throw new Error("new history index " + newIndex + " is out of range");
             }
-
-            $browser.$$url = 'http://server/#'+$history.urlStack[newIndex].url;
-            $browser.poll();
+            $location.path($history.urlStack[newIndex].url);
+            $rootScope.$apply();
         });
         this.tick(1);
     };
@@ -452,7 +454,7 @@ jasmine.getEnv().defaultTimeoutInterval = 25000;
                 if (prop && 
                     !IGNORE_CSS_CLASSES.test(prop) && 
                     !(prop in el1Classes) &&
-                    !(ignoreClassRegex && ignoreClassRegex.test(prop))) {
+                    !(ignoreClassRegex && RegExp(ignoreClassRegex).test(prop))) {
                     error("classes differ: " + prop, el1, el2);
                 }
             }

@@ -26,7 +26,8 @@ jqmModule.directive('jqmHeader', ['jqmConfig', function (jqmConfig) {
     scope: true,
     controller: angular.noop,
     link: function (scope, element, attr) {
-      element.parent().data("jqmHeader", element);
+      element.parent().scope().$header = true;
+
       var hasExplicitTheme = scope.hasOwnProperty('$theme');
       if (!hasExplicitTheme) {
         scope.$theme = jqmConfig.secondaryTheme;

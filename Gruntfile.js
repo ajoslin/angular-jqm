@@ -1,7 +1,5 @@
 module.exports = function(grunt) {
   var pkg = grunt.file.readJSON('./package.json');
-  // needed for karma to locate phantomjs correctly.
-  process.env.PHANTOMJS_BIN = './node_modules/.bin/phantomjs';
   grunt.initConfig({
     pkg: pkg,
     concat: {
@@ -129,7 +127,9 @@ module.exports = function(grunt) {
       options: {
         configFile: 'test/config/karma-shared.conf.js',
         files: ['components/angular/angular.js',
-                'components/angular/angular-mobile.js',
+                'components/angular/angular-touch.js',
+                'components/angular/angular-animate.js',
+                'components/angular/angular-route.js',
                 'components/angular/angular-mocks.js',
                 'test/lib/testutils.js',
                 'test/lib/matchers.js',
@@ -146,7 +146,7 @@ module.exports = function(grunt) {
       dev: {
         options: {
           singleRun: false,
-          browsers: ['PhantomJS']
+          browsers: ['Chrome']
         },
         background: true
       },
@@ -164,7 +164,7 @@ module.exports = function(grunt) {
         options: {
           singleRun: true,
            //Travis CI has firefox, we use it
-          browsers: [process.env.TRAVIS ? 'Firefox' : 'PhantomJS']
+          browsers: [process.env.TRAVIS ? 'Firefox' : 'Chrome']
         }
       }
     },
@@ -208,9 +208,11 @@ module.exports = function(grunt) {
     //We will switch back to bower once bower-1.1.2 resolves its problems with zip files
     'curl-dir': {
       'components/angular': [
-        'http://code.angularjs.org/1.1.5/angular.js',
-        'http://code.angularjs.org/1.1.5/angular-mobile.js',
-        'http://code.angularjs.org/1.1.5/angular-mocks.js',
+        'http://code.angularjs.org/1.2.0-rc.2/angular.js',
+        'http://code.angularjs.org/1.2.0-rc.2/angular-touch.js',
+        'http://code.angularjs.org/1.2.0-rc.2/angular-route.js',
+        'http://code.angularjs.org/1.2.0-rc.2/angular-animate.js',
+        'http://code.angularjs.org/1.2.0-rc.2/angular-mocks.js',
       ],
       'components/jquery-mobile': [
         'http://code.jquery.com/mobile/1.3.1/jquery.mobile-1.3.1.js',

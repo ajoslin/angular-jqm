@@ -39,38 +39,16 @@
 </example>
  */
 
- jqmModule.directive('jqmPanelContainer', function () {
-  return {
-    restrict: 'A',
-    scope: {
-      openPanelName: '=jqmPanelContainer'
-    },
-    transclude: true,
-    templateUrl: 'templates/jqmPanelContainer.html',
-    replace: true
-  };
-});
-// Separate directive for the controller as we can't inject a controller from a directive with templateUrl
-// into children!
 jqmModule.directive('jqmPanelContainer', ['$timeout', '$transitionComplete', '$sniffer', function ($timeout, $transitionComplete, $sniffer) {
   return {
     restrict: 'A',
-    controller: ['$scope', '$element', JqmPanelContainerCtrl],
-    link: function(scope, element, attr, jqmPanelContainerCtrl) {
-      jqmPanelContainerCtrl.setContent(findPanelContent());
-
-      function findPanelContent() {
-        var content = angular.element();
-        angular.forEach(element.children(), function(element) {
-          var el = angular.element(element);
-          // ignore panels and the generated ui-panel-dismiss div.
-          if (!el.data('$jqmPanelController') && el.data('$scope') && el.scope().$$transcluded) {
-            content.push(element);
-          }
-        });
-        return content;
-      }
-    }
+    transclude: true,
+    replace: true,
+    templateUrl: 'templates/jqmPanelContainer.html',
+    scope: {
+      openPanelName: '=jqmPanelContainer'
+    },
+    controller: ['$scope', '$element', JqmPanelContainerCtrl]
   };
   function JqmPanelContainerCtrl($scope, $element) {
     var panels = {},
@@ -79,9 +57,7 @@ jqmModule.directive('jqmPanelContainer', ['$timeout', '$transitionComplete', '$s
     this.addPanel = function (panel) {
       panels[panel.scope.position] = panel;
     };
-    this.setContent = function(_content) {
-      content = _content;
-    };
+
     $scope.$watch('$scopeAs.pc.openPanelName', openPanelChanged);
     if (!$sniffer.animations) {
       $scope.$watch('$scopeAs.pc.openPanelName', transitionComplete);
@@ -125,7 +101,7 @@ jqmModule.directive('jqmPanelContainer', ['$timeout', '$transitionComplete', '$s
 
     function updatePanelContent() {
       if (!content) {
-        return;
+        content = findPanelContent();
       }
       var openPanel = panels[$scope.openPanelName],
         openPanelScope = openPanel && openPanel.scope;
@@ -145,6 +121,18 @@ jqmModule.directive('jqmPanelContainer', ['$timeout', '$transitionComplete', '$s
         !!(openPanelScope && openPanelScope.display === 'push'));
       content.toggleClass('ui-panel-content-wrap-display-overlay',
         !!(openPanelScope && openPanelScope.display === 'overlay'));
+    }
+
+    function findPanelContent() {
+      var content = angular.element();
+      angular.forEach($element.children(), function(node) {
+        var el = angular.element(node);
+        // ignore panels and the generated ui-panel-dismiss div.
+        if (!el.data('$jqmPanelController') && !el.hasClass('ui-panel-dismiss')) {
+          content.push(node);
+        }
+      });
+      return content;
     }
   }
 }]);

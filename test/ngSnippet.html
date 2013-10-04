@@ -5,35 +5,26 @@
     <link type="text/css" rel="stylesheet" href="../components/jquery-mobile/jquery.mobile-1.3.1.min.css">
 
     <script src="../components/angular/angular.js"></script>
-    <script src="../components/angular/angular-mobile.js"></script>
+    <script src="../components/angular/angular-touch.js"></script>
+    <script src="../components/angular/angular-animate.js"></script>
+    <script src="../components/angular/angular-route.js"></script>
     <script src="../dist/angular-jqm.js"></script>
 
     <script>
-        var mod = angular.module("app", ["jqm"]);
+var mod = angular.module("app", ["jqm"]);
         mod.config(function ($routeProvider) {
-            $routeProvider.when("/ngSnippet.html", {
-                redirectTo: "main.html"
-            });
-            $routeProvider.when("/main.html", {
-                templateUrl: 'main.html',
-                animation: 'page-slide'
-            });
-            $routeProvider.when("/page2.html", {
-                templateUrl: 'page2.html',
-                animation: 'page-slide'
+            $routeProvider.when('/main', {
+              templateUrl: 'main.html',
+              animation: 'slide'
+            })
+            .when('/page2', {
+              templateUrl: 'page2.html',
+              animation: 'slide'
             });
             $routeProvider.otherwise({
-                redirectTo: "main.html"
+              redirectTo: '/main' 
             });
         });
-    </script>
-
-
-
-    <script>
-        function NoopCtrl() {
-
-        }
     </script>
 </head>
 
@@ -42,7 +33,7 @@
     <!-- the main page of your app -->
     <div jqm-page jqm-popup-target="$root.myPopup" jqm-popup-model="popIsShown">
         <div jqm-popup="$root.myPopup" ng-animate="'pop'">
-          Hello, popup! What's poppin?! 
+          <div jqm-view="{templateUrl: 'page2.html'}" style="height: 150px; width: 150px;"></div>
         </div>
 
         <div jqm-header>
@@ -50,7 +41,7 @@
           <h1>Header</h1>
           <div class="ui-btn-right" jqm-button ng-click="$root.panel='right'">right</div>
         </div>
-        <a href="#/page2.html">To page2</a>
+        <a href="#/page2">To page2</a>
 
         <div jqm-button ng-click="popIsShown = true">
           Popup on the page
@@ -100,7 +91,7 @@
     <!-- Another page -->
     <div jqm-page>
         <div jqm-header><h1>Page2</h1></div>
-        <a href="#/main.html">To page1</a>
+        <a href="#/main">To page1</a>
 
         <p>hello</p>
 
